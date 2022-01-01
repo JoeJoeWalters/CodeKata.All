@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -31,13 +32,28 @@ namespace Katas.SnailSort
         public string[] Sort(string[][] values)
         {
             Point position = new Point(0, 0);
-            string taken = values[position.X][position.Y];
+            string taken = values[position.Y][position.X];
             IEnumerable<string> sorted = new string[] { };
 
             while (taken != string.Empty)
             {
                 sorted = sorted.Append(taken);
-                taken = string.Empty;
+                values[position.X][position.Y] = string.Empty; // blank out the string so we don't attempt it again (could be done with a lookup but quicker for now)
+
+                // Find the next item depending on the current location
+                if (
+                    position.Y < values.Length
+                    && position.X + 1 < values[position.Y].Length
+                    && values[position.Y][position.X + 1] != string.Empty)
+                {
+                    position = new Point(position.X + 1, position.Y);
+                }
+                else
+                    position = new Point(-1, -1);
+
+                taken = (position.X >= 0 && position.Y >= 0) ?
+                        values[position.Y][position.X] :
+                        string.Empty;
             }
 
             return sorted.ToArray();
