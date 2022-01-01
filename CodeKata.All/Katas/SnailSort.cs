@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Xunit;
 
@@ -29,7 +30,17 @@ namespace Katas.SnailSort
 
         public string[] Sort(string[][] values)
         {
-            return new string[] { };
+            Point position = new Point(0, 0);
+            string taken = values[position.X][position.Y];
+            IEnumerable<string> sorted = new string[] { };
+
+            while (taken != string.Empty)
+            {
+                sorted = sorted.Append(taken);
+                taken = string.Empty;
+            }
+
+            return sorted.ToArray();
         }
     }
     #endregion
