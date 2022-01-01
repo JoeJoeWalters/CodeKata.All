@@ -33,7 +33,9 @@ namespace Katas.SnailSort
         public string[] Sort(string[][] values)
         {
             // No data or first line is empty then throw
-            if (values.Length == 0 || values[0].Length == 0)
+            if (values == null ||
+                values.Length == 0 || 
+                values[0].Length == 0)
                 throw new ArrayTypeMismatchException();
 
             Point position = new Point(0, 0);
@@ -147,6 +149,7 @@ namespace Katas.SnailSort
         {
             var allData = new List<object[]>
             {
+                new object[] { null },
                 new object[] { new string[][] { new string[] { } } },
                 new object[] { new string[][] { } }
             };
