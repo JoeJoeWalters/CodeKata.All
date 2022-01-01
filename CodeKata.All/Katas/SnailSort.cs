@@ -32,6 +32,10 @@ namespace Katas.SnailSort
 
         public string[] Sort(string[][] values)
         {
+            // No data or first line is empty then throw
+            if (values.Length == 0 || values[0].Length == 0)
+                throw new ArrayTypeMismatchException();
+
             Point position = new Point(0, 0);
             string taken = values[position.Y][position.X];
             IEnumerable<string> sorted = new string[] { };
@@ -94,6 +98,11 @@ namespace Katas.SnailSort
     #region Tests
     public class Tests
     {
+        public static string[][] SnailTest1x1 =
+            new string[][] {
+                new string[] { "1" }
+            };
+
         public static string[][] SnailTest3x3 =
             new string[][] {
                 new string[] { "1", "2", "3" },
@@ -117,6 +126,7 @@ namespace Katas.SnailSort
                 new string[] { "13", "14", "15" }
             };
 
+        public static string[] ExpectedResult1x1 = new string[] { "1" };
         public static string[] ExpectedResult3x3 = new string[] { "1", "2", "3", "6", "9", "8", "7", "4", "5" };
         public static string[] ExpectedResult4x4 = new string[] { "1", "2", "3", "4", "8", "12", "16", "15", "14", "13", "9", "5", "6", "7", "11", "10" };
         public static string[] ExpectedResult3x4 = new string[] { "1", "2", "3", "7", "11", "15", "14", "13", "9", "5", "6", "10" };
@@ -124,6 +134,7 @@ namespace Katas.SnailSort
         {
             var allData = new List<object[]>
             {
+                new object[] { SnailTest1x1, ExpectedResult1x1 },
                 new object[] { SnailTest3x3, ExpectedResult3x3 },
                 new object[] { SnailTest4x4, ExpectedResult4x4 },
                 new object[] { SnailTest3x4, ExpectedResult3x4 }
@@ -133,7 +144,7 @@ namespace Katas.SnailSort
         }
 
         [Theory]
-        [MemberData(nameof(GetData), 3)]
+        [MemberData(nameof(GetData), 4)]
         public void With_TwoDimensionalArray_Produce_Expected_OneDimensionalArray(string[][] toSort, string[] sorted)
         {
             // ARRANGE
