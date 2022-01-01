@@ -101,20 +101,31 @@ namespace Katas.SnailSort
                 new string[] { "7", "8", "9" }
             };
 
+        public static string[][] SnailTest2 =
+            new string[][] {
+                new string[] { "1", "2", "3", "4" },
+                new string[] { "5", "6", "7", "8" },
+                new string[] { "9", "10", "11", "12" },
+                new string[] { "13", "14", "15", "16" }
+            };
+
         public static string[] ExpectedResult1 = new string[] { "1", "2", "3", "6", "9", "8", "7", "4", "5" };
+
+        public static string[] ExpectedResult2 = new string[] { "1", "2", "3", "4", "8", "12", "16", "15", "14", "13", "9", "5", "6", "7", "11", "10" };
 
         public static IEnumerable<object[]> GetData(int numTests)
         {
             var allData = new List<object[]>
             {
-                new object[] { SnailTest1, ExpectedResult1 }
+                new object[] { SnailTest1, ExpectedResult1 },
+                new object[] { SnailTest2, ExpectedResult2 }
             };
 
             return allData.Take(numTests);
         }
 
         [Theory]
-        [MemberData(nameof(GetData), 1)]
+        [MemberData(nameof(GetData), 2)]
         public void Something_Does_SomethingSpecific_With_Thing_Expecting_SomethingElse(string[][] toSort, string[] sorted)
         {
             // ARRANGE
