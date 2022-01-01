@@ -130,7 +130,7 @@ namespace Katas.SnailSort
         public static string[] ExpectedResult3x3 = new string[] { "1", "2", "3", "6", "9", "8", "7", "4", "5" };
         public static string[] ExpectedResult4x4 = new string[] { "1", "2", "3", "4", "8", "12", "16", "15", "14", "13", "9", "5", "6", "7", "11", "10" };
         public static string[] ExpectedResult3x4 = new string[] { "1", "2", "3", "7", "11", "15", "14", "13", "9", "5", "6", "10" };
-        public static IEnumerable<object[]> GetData(int numTests)
+        public static IEnumerable<object[]> GetData()
         {
             var allData = new List<object[]>
             {
@@ -140,10 +140,10 @@ namespace Katas.SnailSort
                 new object[] { SnailTest3x4, ExpectedResult3x4 }
             };
 
-            return allData.Take(numTests);
+            return allData;
         }
 
-        public static IEnumerable<object[]> GetFailureData(int numTests)
+        public static IEnumerable<object[]> GetFailureData()
         {
             var allData = new List<object[]>
             {
@@ -151,11 +151,11 @@ namespace Katas.SnailSort
                 new object[] { new string[][] { } }
             };
 
-            return allData.Take(numTests);
+            return allData;
         }
 
         [Theory]
-        [MemberData(nameof(GetData), 4)]
+        [MemberData(nameof(GetData))]
         public void With_TwoDimensionalArray_Produce_Expected_OneDimensionalArray(string[][] toSort, string[] sorted)
         {
             // ARRANGE
@@ -169,7 +169,7 @@ namespace Katas.SnailSort
         }
 
         [Theory]
-        [MemberData(nameof(GetFailureData), 2)]
+        [MemberData(nameof(GetFailureData))]
         public void When_EmptyArray_Throw_AppropriateException(string[][] toSort)
         {
             // ARRANGE
