@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -36,10 +37,41 @@ namespace Katas
         public void Generate_BinaryTree_From_Preorder()
         {
             // ARRANGE
+            string[] preorder = new string[] { "a", "b", "d", "e", "c", "f", "g" };
+            Node<string> expected = new Node<string>()
+            {
+                Data = "a",
+                Left = new Node<string>()
+                {
+                    Data = "b",
+                    Left = new Node<string>()
+                    {
+                        Data = "d"
+                    },
+                    Right = new Node<string>()
+                    {
+                        Data = "e"
+                    }
+                },
+                Right = new Node<string>()
+                {
+                    Data = "c",
+                    Left = new Node<string>()
+                    {
+                        Data = "f"
+                    },
+                    Right = new Node<string>()
+                    {
+                        Data = "g"
+                    }
+                }
+            };
 
             // ACT
+            Node<string> result = BinaryTree.Generate<string>(preorder);
 
             // ASSERT
+            result.Should().BeEquivalentTo(expected);
         }
     }
     #endregion
