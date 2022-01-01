@@ -143,6 +143,17 @@ namespace Katas.SnailSort
             return allData.Take(numTests);
         }
 
+        public static IEnumerable<object[]> GetFailureData(int numTests)
+        {
+            var allData = new List<object[]>
+            {
+                new object[] { new string[][] { new string[] { } } },
+                new object[] { new string[][] { } }
+            };
+
+            return allData.Take(numTests);
+        }
+
         [Theory]
         [MemberData(nameof(GetData), 4)]
         public void With_TwoDimensionalArray_Produce_Expected_OneDimensionalArray(string[][] toSort, string[] sorted)
@@ -155,6 +166,20 @@ namespace Katas.SnailSort
 
             // ASSERT
             result.Should().BeEquivalentTo(sorted);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetFailureData), 2)]
+        public void When_EmptyArray_Throw_AppropriateException(string[][] toSort)
+        {
+            // ARRANGE
+            SnailSorter sorter = new SnailSorter();
+
+            // ACT
+            Action act = () => sorter.Sort(toSort);
+
+            // ASSERT
+            act.Should().Throw<ArrayTypeMismatchException>();
         }
     }
     #endregion
