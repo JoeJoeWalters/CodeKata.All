@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using Xunit;
@@ -38,22 +39,51 @@ namespace Katas.SnailSort
             while (taken != string.Empty)
             {
                 sorted = sorted.Append(taken);
-                values[position.X][position.Y] = string.Empty; // blank out the string so we don't attempt it again (could be done with a lookup but quicker for now)
+                Debug.WriteLine($"Clearing x:{position.X}, y:{position.Y}");
+                values[position.Y][position.X] = string.Empty; // blank out the string so we don't attempt it again (could be done with a lookup but quicker for now)
 
-                // Find the next item depending on the current location
+                // Try and move right it there is something to grab
                 if (
-                    position.Y < values.Length
-                    && position.X + 1 < values[position.Y].Length
-                    && values[position.Y][position.X + 1] != string.Empty)
+                    position.Y < values.Length - 1
+                    && position.X < values[position.Y].Length - 1
+                    && values[position.Y][position.X + 1] != string.Empty
+                    )
                 {
                     position = new Point(position.X + 1, position.Y);
                 }
+                // otherwise try and move down
+                else if (
+                    position.Y < values.Length - 1
+                    && values[position.Y + 1][position.X] != string.Empty
+                    )
+                {
+                    position = new Point(position.X, position.Y + 1);
+                }
+                // otherwise try and move left
+                else if (
+                    position.X > 0
+                    && values[position.Y][position.X - 1] != string.Empty
+                    )
+                {
+                    position = new Point(position.X - 1, position.Y);
+                }
+                // otherwise move up
+                else if (
+                    position.Y > 0
+                    && values[position.Y - 1][position.X] != string.Empty
+                    )
+                {
+                    position = new Point(position.X, position.Y - 1);
+                }
                 else
-                    position = new Point(-1, -1);
+                    position = new Point(-1, -1); // Must be finished
 
+                // Somethign to grab? Then grab it otherwise set the loop exit clause
                 taken = (position.X >= 0 && position.Y >= 0) ?
                         values[position.Y][position.X] :
                         string.Empty;
+
+                Debug.WriteLine($"Taking x:{position.X}, y:{position.Y} = {taken}");
             }
 
             return sorted.ToArray();
