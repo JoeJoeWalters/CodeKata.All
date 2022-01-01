@@ -94,14 +94,14 @@ namespace Katas.SnailSort
     #region Tests
     public class Tests
     {
-        public static string[][] SnailTest1 =
+        public static string[][] SnailTest3x3 =
             new string[][] {
                 new string[] { "1", "2", "3" },
                 new string[] { "4", "5", "6" },
                 new string[] { "7", "8", "9" }
             };
 
-        public static string[][] SnailTest2 =
+        public static string[][] SnailTest4x4 =
             new string[][] {
                 new string[] { "1", "2", "3", "4" },
                 new string[] { "5", "6", "7", "8" },
@@ -109,7 +109,7 @@ namespace Katas.SnailSort
                 new string[] { "13", "14", "15", "16" }
             };
 
-        public static string[][] SnailTest3 =
+        public static string[][] SnailTest3x4 =
             new string[][] {
                 new string[] { "1", "2", "3" },
                 new string[] { "5", "6", "7" },
@@ -117,16 +117,16 @@ namespace Katas.SnailSort
                 new string[] { "13", "14", "15" }
             };
 
-        public static string[] ExpectedResult1 = new string[] { "1", "2", "3", "6", "9", "8", "7", "4", "5" };
-        public static string[] ExpectedResult2 = new string[] { "1", "2", "3", "4", "8", "12", "16", "15", "14", "13", "9", "5", "6", "7", "11", "10" };
-        public static string[] ExpectedResult3 = new string[] { "1","2","3","7","11","15","14","13","9","5","6","10" };
+        public static string[] ExpectedResult3x3 = new string[] { "1", "2", "3", "6", "9", "8", "7", "4", "5" };
+        public static string[] ExpectedResult4x4 = new string[] { "1", "2", "3", "4", "8", "12", "16", "15", "14", "13", "9", "5", "6", "7", "11", "10" };
+        public static string[] ExpectedResult3x4 = new string[] { "1", "2", "3", "7", "11", "15", "14", "13", "9", "5", "6", "10" };
         public static IEnumerable<object[]> GetData(int numTests)
         {
             var allData = new List<object[]>
             {
-                new object[] { SnailTest1, ExpectedResult1 },
-                new object[] { SnailTest2, ExpectedResult2 },
-                new object[] { SnailTest3, ExpectedResult3 }
+                new object[] { SnailTest3x3, ExpectedResult3x3 },
+                new object[] { SnailTest4x4, ExpectedResult4x4 },
+                new object[] { SnailTest3x4, ExpectedResult3x4 }
             };
 
             return allData.Take(numTests);
@@ -134,7 +134,7 @@ namespace Katas.SnailSort
 
         [Theory]
         [MemberData(nameof(GetData), 3)]
-        public void Something_Does_SomethingSpecific_With_Thing_Expecting_SomethingElse(string[][] toSort, string[] sorted)
+        public void With_TwoDimensionalArray_Produce_Expected_OneDimensionalArray(string[][] toSort, string[] sorted)
         {
             // ARRANGE
             SnailSorter sorter = new SnailSorter();
