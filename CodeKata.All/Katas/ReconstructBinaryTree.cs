@@ -1,15 +1,18 @@
 ﻿using FluentAssertions;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Xunit;
 
-namespace Katas
+namespace Katas.ReconstructBinaryTree
 {
     /*
     Problem:
 
-    Reconstruct Binary Tree from Preorder array
+    Reconstruct Binary Tree from Preorder or Inorder array
+
+    Preorder -> If assuming from an existing tree, reconstruction can be done 
+    by splitting the remaining nodes in to two, taking the first element and doing the 
+    same with the following nodes etc. etc.
     */
 
     #region Solution
@@ -21,11 +24,48 @@ namespace Katas
         public T Data { get; set; }
     }
 
-    public static class BinaryTree
+    public enum BinaryTreePopulationType
     {
-        public static Node<T> Generate<T>(T[] source)
+        FromUnordered,
+        FromPreorder,
+        FromInorder
+    }
+
+    public class BinaryTree<T>
+    {
+        public Node<T> Generate(T[] source, BinaryTreePopulationType populationType)
         {
-            return new Node<T>();
+            // Because C# 8.0 not 9.0
+            Stack<T> ordered =
+                (populationType == BinaryTreePopulationType.FromUnordered) ?
+                    new Stack<T>(source.OrderByDescending(x => x)) :
+                    new Stack<T>(source);
+
+            if (populationType == BinaryTreePopulationType.FromUnordered)
+            {
+                Node<T> result = new Node<T>() { Data = ordered.Pop() };
+
+                Stuff(result, ordered);
+
+                return result;
+            }
+
+            return null;
+        }
+
+        private void Stuff(Node<T> node, Stack<T> ordered)
+        {
+            if (node.Left == null && ordered.Count != 0)
+                node.Left = new Node<T>() { Data = ordered.Pop() };
+
+            if (node.Right == null && ordered.Count != 0)
+                node.Right = new Node<T>() { Data = ordered.Pop() };
+
+            if (node.Left != null)
+                Stuff(node.Left, ordered);
+
+            if (node.Right != null)
+                Stuff(node.Right, ordered);
         }
     }
     #endregion
@@ -34,10 +74,10 @@ namespace Katas
     public class Tests
     {
         [Fact]
-        public void Generate_BinaryTree_From_Preorder()
+        public void Generate_BinaryTree_From_PreOrder()
         {
             // ARRANGE
-            string[] preorder = new string[] { "a", "b", "d", "e", "c", "f", "g" };
+            string[] order = new string[] { "a", "b", "d", "e", "c", "f", "g" };
             Node<string> expected = new Node<string>()
             {
                 Data = "a",
@@ -68,7 +108,7 @@ namespace Katas
             };
 
             // ACT
-            Node<string> result = BinaryTree.Generate<string>(preorder);
+            Node<string> result = (new BinaryTree<string>()).Generate(order, BinaryTreePopulationType.FromUnordered);
 
             // ASSERT
             result.Should().BeEquivalentTo(expected);
