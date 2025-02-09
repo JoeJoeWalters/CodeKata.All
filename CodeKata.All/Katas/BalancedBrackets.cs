@@ -32,8 +32,35 @@ namespace Katas.BalancedBrackets
     Explanation: The expression is not balanced because there is a closing ‘]’ before the closing ‘}’.
     */
 
+    public interface IBracketChecker
+    {
+        Boolean Test(string testString);
+    }
+
     #region Solution
-    public class Solution
+
+    public class NPlus1Solution : IBracketChecker
+    {
+        public Boolean Test(string testString)
+        {
+            String beforeString;
+            String afterString = testString;
+
+            do
+            {
+                beforeString = afterString;
+                
+                afterString = afterString.Replace("{}", String.Empty);
+                afterString = afterString.Replace("[]", String.Empty);
+                afterString = afterString.Replace("()", String.Empty);
+
+            } while (beforeString != afterString);
+
+            return afterString == String.Empty;
+        }
+    }
+
+    public class NSolution : IBracketChecker
     {
 
         private Dictionary<char, char> pairs = new Dictionary<char, char>()
@@ -43,7 +70,7 @@ namespace Katas.BalancedBrackets
             {'[', ']' }
         };
 
-        public Solution()
+        public NSolution()
         {
         }
 
@@ -64,7 +91,7 @@ namespace Katas.BalancedBrackets
                 }
             }
 
-            return true;
+            return expectedCloses.Count == 0;
         }
     }
     #endregion
@@ -72,6 +99,13 @@ namespace Katas.BalancedBrackets
     #region Tests
     public class Tests
     {
+        private IBracketChecker bracketChecker;
+
+        public Tests()
+        {
+            bracketChecker = new NSolution();
+        }
+
         [Theory]
         [InlineData("{}")]
         [InlineData("()")]
@@ -79,7 +113,6 @@ namespace Katas.BalancedBrackets
         public void When_Single_Pairs_Do_They_Balance(string testString)
         {
             // ARRANGE
-            var bracketChecker = new Solution();
 
             // ACT
             var result = bracketChecker.Test(testString);
@@ -95,7 +128,6 @@ namespace Katas.BalancedBrackets
         public void When_No_Single_Pairs_Do_They_Not_Balance(string testString)
         {
             // ARRANGE
-            var bracketChecker = new Solution();
 
             // ACT
             var result = bracketChecker.Test(testString);
@@ -111,7 +143,6 @@ namespace Katas.BalancedBrackets
         public void When_Multiple_Pairs_Do_They_Balance(string testString)
         {
             // ARRANGE
-            var bracketChecker = new Solution();
 
             // ACT
             var result = bracketChecker.Test(testString);
@@ -127,7 +158,6 @@ namespace Katas.BalancedBrackets
         public void When_Multiple_Pairs_Out_Of_Line_Do_They_Not_Balance(string testString)
         {
             // ARRANGE
-            var bracketChecker = new Solution();
 
             // ACT
             var result = bracketChecker.Test(testString);
@@ -143,7 +173,6 @@ namespace Katas.BalancedBrackets
         public void When_Multiple_Complex_Pairs_Do_They_Balance(string testString)
         {
             // ARRANGE
-            var bracketChecker = new Solution();
 
             // ACT
             var result = bracketChecker.Test(testString);
