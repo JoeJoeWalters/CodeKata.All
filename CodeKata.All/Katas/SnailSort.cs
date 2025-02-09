@@ -11,6 +11,10 @@ namespace Katas.SnailSort
     /*
     Problem:
 
+    SnailSort is an algorithm that takes an array of equal-length sub-arrays, and then merges them into a single array in a clockwise spiral, starting from the upper-left hand corner.
+
+    For example, it turns
+
     [
         [1, 2, 3],
         [4, 5, 6],
