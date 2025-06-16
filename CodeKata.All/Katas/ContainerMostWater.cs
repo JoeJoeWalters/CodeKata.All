@@ -74,6 +74,21 @@ namespace Katas.ContainerMostWater
             maxArea.Should().Be(expectedMaxArea);
 
         }
+
+        [Theory]
+        [InlineData(null, 0)]
+        [InlineData(new int[] { }, 0)]
+        public void Given_EmptyOrNullArray_ShouldReturnZero(int[] heights, int expectedMaxArea)
+        {
+            // ARRANGE
+            var solution = new Solution();
+         
+            // ACT
+            var maxArea = solution.MaxArea(heights);
+            
+            // ASSERT
+            maxArea.Should().Be(expectedMaxArea);
+        }
     }
 
     #endregion
