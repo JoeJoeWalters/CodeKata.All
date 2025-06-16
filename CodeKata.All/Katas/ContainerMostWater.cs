@@ -5,13 +5,19 @@ using Xunit;
 namespace Katas.ContainerMostWater
 {
     /*
-    https://leetcode.com/problems/container-with-most-water/
+ 
+    You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
 
-    https://dev.to/seanpgallivan/solution-container-with-most-water-1907
+    Find two lines that together with the x-axis form a container, such that the container contains the most water.
 
-    https://www.geeksforgeeks.org/container-with-most-water/
+    Return the maximum amount of water a container can store.
 
-    https://leetcode.com/problems/deepest-leaves-sum/ 
+    Notice that you may not slant the container.
+    
+    |             |
+    | |     |   | |
+    | | | | | | | |
+
     */
 
     #region Solution
